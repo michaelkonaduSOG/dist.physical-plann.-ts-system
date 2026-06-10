@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Step 3 - Structure Details</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        textarea {
+            resize: none;
+            height: 80px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            width: 100%;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>🏗 Step 3: Structure Inspection</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Structure Type</label>
+        <select name="structure_type" required>
+            <option value="">-- Select Type --</option>
+            <option value="Container Shop">Container Shop</option>
+            <option value="Wooden Kiosk">Wooden Kiosk</option>
+            <option value="Metal Kiosk">Metal Kiosk</option>
+            <option value="Food Stall">Food Stall</option>
+            <option value="Canopy">Canopy</option>
+            <option value="Temporary Shed">Temporary Shed</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label>Permit Status</label>
+        <select name="permit_status" required>
+            <option value="">-- Select Status --</option>
+            <option value="PAID">Paid</option>
+            <option value="ARREARS">Arrears</option>
+            <option value="NOT_REGISTERED">Pending</option>
+        </select>
+
+        <label>Notes</label>
+        <textarea name="notes" placeholder="Any observations..."></textarea>
+
+        <button type="submit">Next ➜ Final Review</button>
+    </form>
+
+</div>
+
+</body>
+</html>

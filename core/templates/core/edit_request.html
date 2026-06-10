@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Request</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .box {
+            background: #f7f7f7;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>📝 Request Edit</h2>
+
+    <div class="box">
+        <p><strong>TS:</strong> {{ structure.ts_id }}</p>
+        <p><strong>Owner:</strong> {{ structure.owner_name }}</p>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Field to Edit</label>
+        <select name="field_name" required>
+
+            <option value="owner_name">Owner Name</option>
+            <option value="owner_phone">Owner Phone</option>
+            <option value="ghana_card">Ghana Card</option>
+
+            <option value="town">Town</option>
+            <option value="area">Area</option>
+
+            <option value="structure_type">Structure Type</option>
+
+            <option value="notes">Notes</option>
+
+        </select>
+
+        <label>New Value</label>
+        <input type="text" name="new_value" required>
+
+        <label>Reason for Change</label>
+        <textarea name="reason" placeholder="Explain why this change is needed..." required></textarea>
+
+        <button type="submit">Submit for Admin Approval</button>
+    </form>
+
+</div>
+
+</body>
+</html>

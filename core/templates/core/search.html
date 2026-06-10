@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search TS</title>
+
+    <style>
+        body{
+            font-family: Arial;
+            background:#f5f5f5;
+            padding:20px;
+        }
+
+        .container{
+            max-width:700px;
+            margin:auto;
+            background:white;
+            padding:25px;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,.1);
+        }
+
+        input{
+            width:80%;
+            padding:10px;
+        }
+
+        button{
+            padding:10px 15px;
+            cursor:pointer;
+        }
+
+        .card{
+            margin-top:15px;
+            padding:15px;
+            border:1px solid #ddd;
+            border-radius:8px;
+            background:#fafafa;
+        }
+
+        .actions a{
+            text-decoration:none;
+            margin-right:15px;
+            font-weight:bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>🔍 Search TS Record</h2>
+
+    <form method="GET">
+
+        <input
+            type="text"
+            name="query"
+            placeholder="TS Number, Name or Phone"
+            value="{{ query }}"
+        >
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+    {% if result %}
+
+        {% for r in result %}
+
+            <div class="card">
+
+                <h3>{{ r.ts_id }} - {{ r.owner_name }}</h3>
+
+                <p>{{ r.owner_phone }}</p>
+
+                <p>
+                    {{ r.town }} |
+                    {{ r.structure_type }}
+                </p>
+
+                <div class="actions">
+                    <div class="actions">
+
+                        <a href="{% url 'structure_detail' r.ts_id %}"
+                            style="display:inline-block;padding:10px 14px;background:black;color:white;border-radius:6px;text-decoration:none;">
+                            📄 View Details
+                        </a>
+                    </div>
+                </div>
+        
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

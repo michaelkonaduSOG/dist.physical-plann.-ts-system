@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Successful</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            max-width: 500px;
+            margin: auto;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        a {
+            display: block;
+            margin: 12px;
+            padding: 12px;
+            background: black;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        a:hover {
+            background: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h2>✅ Payment Recorded Successfully</h2>
+    <p>TS ID: {{ ts_id }}</p>
+
+    <a href="/core/add/step1/">➕ Add New Structure</a>
+    <a href="/core/search/">🔍 Search TS</a>
+    <a href="/core/dashboard/">🏠 Dashboard</a>
+
+</div>
+
+</body>
+</html>

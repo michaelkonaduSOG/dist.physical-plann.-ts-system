@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Step 1 - Smart Location</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 12px;
+            width: 100%;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .gps-box {
+            margin-top: 10px;
+            padding: 12px;
+            background: #e8f5e9;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>📍 Step 1: Smart Location Detection</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- TOWN -->
+        <label>Town</label>
+        <select name="town" id="town" required>
+            <option value="">-- Select Town --</option>
+            {% for town in towns %}
+                <option value="{{ town }}">{{ town }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- AREA -->
+        <label>Area / Street</label>
+        <input type="text" name="area" required>
+
+        <!-- GPS DISPLAY -->
+        <div class="gps-box">
+            📡 <span id="gpsStatus">Waiting for GPS...</span><br>
+            📍 <span id="locationName">Detecting location...</span><br>
+            🏷️ <b>Digital Address:</b> <span id="digitalAddr">Not generated</span>
+        </div>
+
+        <!-- GPS FIELDS -->
+        <input type="hidden" id="lat" name="latitude" required>
+        <input type="hidden" id="lng" name="longitude" required>
+
+        <button type="button" onclick="getLocation()">📍 Detect Location</button>
+
+        <button type="submit" id="submitBtn">Next ➜ Owner Details</button>
+    </form>
+
+</div>
+
+<script>
+
+function generateCode(lat, lng) {
+    let raw = (lat + "," + lng).replace(/\./g, "");
+    let hash = btoa(raw).replace(/=/g, "").substring(0, 8).toUpperCase();
+    return "GH-" + hash;
+}
+
+// MAIN GPS FUNCTION
+function getLocation() {
+
+    document.getElementById("gpsStatus").innerText = "Requesting GPS permission...";
+
+    navigator.geolocation.getCurrentPosition(success, error);
+}
+
+// SUCCESS
+function success(position) {
+
+    let lat = position.coords.latitude;
+    let lng = position.coords.longitude;
+
+    document.getElementById("lat").value = lat;
+    document.getElementById("lng").value = lng;
+
+    document.getElementById("gpsStatus").innerText = "GPS captured ✔";
+
+    // DIGITAL ADDRESS
+    let code = generateCode(lat, lng);
+    document.getElementById("digitalAddr").innerText = code;
+
+    // Reverse geocoding
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+        .then(res => res.json())
+        .then(data => {
+
+            if (!data || !data.display_name) {
+                document.getElementById("locationName").innerText = "Location found";
+                return;
+            }
+
+            let place = data.display_name;
+            let shortName = place.split(",")[0] + ", " + place.split(",")[1];
+
+            document.getElementById("locationName").innerText = shortName;
+
+            // auto town hint
+            let townSelect = document.getElementById("town");
+
+            let p = place.toLowerCase();
+            if (p.includes("nsuta")) townSelect.value = "Nsuta";
+            else if (p.includes("beposo")) townSelect.value = "Beposo";
+            else if (p.includes("kwamang")) townSelect.value = "Kwamang";
+            else if (p.includes("atonsu")) townSelect.value = "Atonsu";
+        });
+}
+
+// ERROR
+function error() {
+    document.getElementById("gpsStatus").innerText =
+        "❌ GPS failed — allow location access";
+}
+
+// PREVENT EMPTY SUBMIT
+document.querySelector("form").addEventListener("submit", function(e) {
+
+    let lat = document.getElementById("lat").value;
+    let lng = document.getElementById("lng").value;
+
+    if (!lat || !lng) {
+        e.preventDefault();
+        alert("📍 Please detect location before continuing");
+    }
+});
+
+// AUTO RUN
+window.onload = getLocation;
+
+</script>
+
+</body>
+</html>

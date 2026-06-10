@@ -1,0 +1,33 @@
+{% for s in structures %}
+
+<div style="padding:15px; border:1px solid #ddd; margin-bottom:10px; border-radius:10px;">
+
+    <h3>{{ s.ts_id }} - {{ s.owner_name }}</h3>
+    <p>{{ s.owner_phone }}</p>
+    <p>{{ s.town }} | {{ s.structure_type }}</p>
+
+    <!-- ACTION BUTTONS -->
+    <div style="margin-top:10px; display:flex; gap:10px;">
+
+        <!-- DETAIL -->
+      <a href="{% url 'structure_detail' s.ts_id %}"
+         style="padding:8px 12px; background:black; color:white; text-decoration:none; border-radius:6px;">
+         📄 Detail
+      </a>
+      <!-- EDIT REQUEST -->
+      <a href="{% url 'request_edit' s.ts_id %}"
+         style="padding:8px 12px; background:orange; color:white; text-decoration:none; border-radius:6px;">
+         ✏️ Request Edit
+      </a>
+
+<!-- PAYMENT -->
+      <a href="{% url 'record_payment' s.ts_id %}"
+         style="padding:8px 12px; background:green; color:white; text-decoration:none; border-radius:6px;">
+         💰 Payment
+      </a>
+
+    </div>
+
+</div>
+
+{% endfor %}

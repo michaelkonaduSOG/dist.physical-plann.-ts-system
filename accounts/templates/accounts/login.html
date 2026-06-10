@@ -1,0 +1,30 @@
+<div style="width:300px;margin:100px auto;font-family:Arial;">
+    <h2 style="text-align:center;">Collector Login</h2>
+
+    {% if error %}
+        <p style="color:red;text-align:center;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <p style="text-align:center;color:gray;font-size:12px;">
+            Enter your Collector ID and password provided by admin
+        </p>
+
+        <input style="width:100%;padding:10px;margin:5px 0;"
+               type="text"
+               name="collector_id"
+               placeholder="Collector ID (e.g. SC001)"
+               required>
+
+        <input style="width:100%;padding:10px;margin:5px 0;"
+               type="password"
+               name="password"
+               placeholder="Password"
+               required>
+
+        <button style="width:100%;padding:10px;background:black;color:white;">
+            Login
+        </button>
+    </form>
+</div>

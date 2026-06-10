@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Structure Details</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: #f7f7f7;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        img {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .actions {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .actions a {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 15px;
+            background: black;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .actions a:hover {
+            background: #333;
+        }
+
+        .status-paid {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            color: orange;
+            font-weight: bold;
+        }
+
+        .status-arrears {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>📌 Structure Details</h2>
+
+    <!-- TS INFO -->
+    <div class="card">
+        <p><span class="label">TS Number:</span> {{ structure.ts_id }}</p>
+    </div>
+
+    <!-- OWNER -->
+    <div class="card">
+        <h3>👤 Owner Information</h3>
+
+        <p><span class="label">Full Name:</span> {{ structure.owner_name }}</p>
+
+        <p><span class="label">Telephone Number:</span>
+            {{ structure.owner_phone }}
+        </p>
+
+        <p><span class="label">Ghana Card Number:</span>
+            {{ structure.ghana_card }}
+        </p>
+    </div>
+
+    <!-- LOCATION -->
+    <div class="card">
+        <h3>📍 Location</h3>
+
+        <p><span class="label">Town:</span> {{ structure.town }}</p>
+        <p><span class="label">Area:</span> {{ structure.area }}</p>
+
+        <p><span class="label">GPS:</span>
+            {{ structure.latitude }}, {{ structure.longitude }}
+        </p>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h3>🏗 Structure Info</h3>
+
+        <p><span class="label">Type:</span> {{ structure.structure_type }}</p>
+
+        <p>
+            <span class="label">Permit Status:</span>
+
+            {% if structure.permit_status == "PAID" %}
+                <span class="status-paid">✅ PAID</span>
+
+            {% elif structure.permit_status == "PENDING" %}
+                <span class="status-pending">🟡 PENDING</span>
+
+            {% else %}
+                <span class="status-arrears">❌ ARREARS</span>
+            {% endif %}
+        </p>
+
+        <p><span class="label">Notes:</span> {{ structure.notes }}</p>
+    </div>
+
+    <!-- PHOTO -->
+    <div class="card">
+        <h3>📸 Evidence Photo</h3>
+
+        {% if structure.evidence_photo %}
+            <img src="{{ structure.evidence_photo.url }}">
+        {% else %}
+            <p>No image uploaded</p>
+        {% endif %}
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+
+        <a href="{% url 'record_payment_session' structure.ts_id %}">
+        💰 Payment
+        </a>
+
+        <a href="{% url 'request_edit' structure.ts_id %}">
+            ✏️ Request Edit
+        </a>
+
+        <a href="{% url 'structure_search' %}">
+            ⬅ Back to Search
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
